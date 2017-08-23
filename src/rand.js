@@ -1,3 +1,5 @@
+import UINT64 from 'cuint/lib/uint64';
+
 export default class RandJS {
 
     constructor(seed = Date.now()) {
@@ -5,6 +7,11 @@ export default class RandJS {
         this.current = this.seed;
         this.modulus = 2147483647;
         this.multiplier = 16807;
+
+        this.pcgIncrement = UINT64(this.seed);
+        this.pcgMultiplier = UINT64('6364136223846793005');
+        this.pcgState = UINT64(this.seed);
+        this.max32Bit = 2 ** 32;
     }
 
     _next() {
@@ -16,8 +23,27 @@ export default class RandJS {
         return gen.length === n ? gen : this._many(n, func, gen);
     }
 
+    _nextState() {
+        this.pcgState.multiply(this.pcgMultiplier).add(this.pcgIncrement);
+    }
+
+    _pcg() {
+        this._nextState();
+
+        // output = state >> (29 - (state >> 61))
+        return this.pcgState.clone().shiftr(29 - this.pcgState.clone().shiftr(61).toNumber()).toNumber();
+    }
+
+    _pcgFloat() {
+        return this._pcg() / this.max32Bit;
+    }
+
+    randpcg(a = 0, b = 1) {
+        return a + (b - a) * this._pcgFloat();
+    }
+
     rand(a = 0, b = 1) {
-        return a + (b - a) * this._next() / this.modulus;
+        return a + (b - a) * (this._next() / this.modulus);
     }
 
     randInt(a = 0, b = this.modulus - 1) {
@@ -26,6 +52,10 @@ export default class RandJS {
 
     manyRand(n, a = 0, b = 1) {
         return this._many(n, () => this.rand(a, b));
+    }
+
+    manyRandPcg(n, a = 0, b = 1) {
+        return this._many(n, () => this.randpcg(a, b));
     }
 
     manyRandInt(n, a = 0, b = this.modulus - 1) {

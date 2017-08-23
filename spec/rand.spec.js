@@ -54,5 +54,21 @@ describe('RandJS:', () => {
         expect(num.indexOf(11)).not.toBe(-1);
     });
 
+    it('rand pcg testing floats [0, 1)', () => {
+        const r = new RandJS();
+        var num = r.manyRandPcg(1000);
+
+        expect(Math.max(...num) < 1).toBe(true);
+        expect(Math.min(...num) >= 0).toBe(true);
+    });
+
+    it('rand pcg testing floats [10, 100)', () => {
+        const r = new RandJS();
+        var num = r.manyRandPcg(1000, 10, 100);
+
+        expect(Math.max(...num) < 100).toBe(true);
+        expect(Math.min(...num) >= 10).toBe(true);
+    });
+
 });
 
