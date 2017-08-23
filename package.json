@@ -15,7 +15,9 @@
     "babel-cli": "^6.26.0",
     "babel-preset-babili": "^0.1.4",
     "babel-preset-es2015": "^6.24.1",
-    "cuint": "^0.2.2",
     "jasmine": "^2.7.0"
+  },
+  "dependencies": {
+    "cuint": "^0.2.2"
   }
 }
