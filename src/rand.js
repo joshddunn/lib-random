@@ -31,7 +31,13 @@ export default class RandJS {
         this._nextState();
 
         // output = state >> (29 - (state >> 61))
-        return this.pcgState.clone().shiftr(29 - this.pcgState.clone().shiftr(61).toNumber()).toNumber();
+        // return this.pcgState.clone().shiftr(29 - this.pcgState.clone().shiftr(61).toNumber()).toNumber();
+
+        // output = (state ^ (state >> 22)) >> (22 + (state >> 61))
+        var left = this.pcgState.clone().xor(this.pcgState.clone().shiftr(22));
+        var right = 22 + this.pcgState.clone().shiftr(61).toNumber();
+
+        return left.shiftr(right).toNumber();
     }
 
     _pcgFloat() {
