@@ -6,7 +6,7 @@
   "scripts": {
     "clear": "rm -rf node_modules/",
     "test": "babel-node spec/run.js",
-    "build": "BABEL_ENV=production babel src -d lib"
+    "build": "BABEL_ENV=production babel src -o lib/rand.min.js"
   },
   "author": "",
   "license": "ISC",
