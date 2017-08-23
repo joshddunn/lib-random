@@ -2,7 +2,7 @@ import RandJS from '../src/rand';
 
 'use strict';
 
-describe('seeds', () => {
+describe('RandJS:', () => {
 
     it('default seed value', () => {
         const r = new RandJS();
@@ -17,11 +17,7 @@ describe('seeds', () => {
 
     it('check default float values are between 0 and 1', () => {
         const r = new RandJS();
-
-        var num = [];
-        for (var i = 0; i < 1000; i++) {
-            num.push(r.rand());
-        }
+        var num = r.manyRand(1000);
 
         num.forEach((e) => {
             expect(e < 1).toBe(true);
@@ -31,11 +27,7 @@ describe('seeds', () => {
 
     it('check float values are between 10 and 100', () => {
         const r = new RandJS();
-
-        var num = [];
-        for (var i = 0; i < 1000; i++) {
-            num.push(r.rand(10, 100));
-        }
+        var num = r.manyRand(1000, 10, 100);
 
         num.forEach((e) => {
             expect(e < 100).toBe(true);
@@ -44,13 +36,9 @@ describe('seeds', () => {
     });
 
 
-    it('check default int values are between 0 and 1', () => {
+    it('check default int values are between 0 and RAND_MAX', () => {
         const r = new RandJS();
-
-        var num = [];
-        for (var i = 0; i < 1000; i++) {
-            num.push(r.randInt());
-        }
+        var num = r.manyRandInt(1000);
 
         num.forEach((e) => {
             expect(e < r.m).toBe(true);
@@ -58,13 +46,9 @@ describe('seeds', () => {
         });
     });
 
-    it('check int values are between 10 and 100', () => {
+    it('check int values are between 10 and 100, inclusive', () => {
         const r = new RandJS();
-
-        var num = [];
-        for (var i = 0; i < 1000; i++) {
-            num.push(r.randInt(10, 100));
-        }
+        var num = r.manyRandInt(1000, 10, 100);
 
         num.forEach((e) => {
             expect(e <= 100).toBe(true);
@@ -74,19 +58,11 @@ describe('seeds', () => {
 
     it('check int values are inclusive', () => {
         const r = new RandJS();
-
-        var num = [];
-        for (var i = 0; i < 1000; i++) {
-            num.push(r.randInt(10, 11));
-        }
+        var num = r.manyRandInt(1000, 10, 11);
 
         expect(num.indexOf(10) === -1).toBe(false);
         expect(num.indexOf(11) === -1).toBe(false);
     });
 
-    it('average is around 0.5', () => {
-        // var num = [];
-        // console.log(num.reduce((a,b) => { return a + b }) / num.length);
-    });
 });
 

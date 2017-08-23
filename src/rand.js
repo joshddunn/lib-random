@@ -19,6 +19,19 @@ export default class RandJS {
         return a + this.next() % (b + 1 - a);
     }
 
+    manyRand(n, a = 0, b = 1) {
+        return this._many(n, () => this.rand(a, b));
+    }
+
+    manyRandInt(n, a = 0, b = this.m - 1) {
+        return this._many(n, () => this.randInt(a, b));
+    }
+
+    _many(n, func, gen = []) {
+        gen.push(func());
+        return gen.length === n ? gen : this._many(n, func, gen);
+    }
+
     static seed() {
         return this.seed;
     }
