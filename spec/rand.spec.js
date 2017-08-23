@@ -34,7 +34,7 @@ describe('RandJS:', () => {
         const r = new RandJS();
         var num = r.manyRandInt(1000);
 
-        expect(Math.max(...num) <= r.randMax).toBe(true);
+        expect(Math.max(...num) <= r.modulus).toBe(true);
         expect(Math.min(...num) >= 10).toBe(true);
     });
 
@@ -50,8 +50,8 @@ describe('RandJS:', () => {
         const r = new RandJS();
         var num = r.manyRandInt(1000, 10, 11);
 
-        expect(num.indexOf(10)).not.toBe(false);
-        expect(num.indexOf(11)).not.toBe(false);
+        expect(num.indexOf(10)).not.toBe(-1);
+        expect(num.indexOf(11)).not.toBe(-1);
     });
 
 });

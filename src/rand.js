@@ -31,12 +31,4 @@ export default class RandJS {
     manyRandInt(n, a = 0, b = this.modulus - 1) {
         return this._many(n, () => this.randInt(a, b));
     }
-
-    static seed() {
-        return this.seed;
-    }
-
-    get randMax() {
-        return this.modulus;
-    }
 }
