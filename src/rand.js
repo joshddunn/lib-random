@@ -8,7 +8,7 @@ export default class RandJS {
         this.modulus = 2147483647;
         this.multiplier = 16807;
 
-        this.pcgIncrement = UINT64(this.seed);
+        this.pcgIncrement = UINT64(1);
         this.pcgMultiplier = UINT64('6364136223846793005');
         this.pcgState = UINT64(this.seed);
         this.max32Bit = 2 ** 32;
