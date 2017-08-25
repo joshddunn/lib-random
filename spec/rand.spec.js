@@ -2,6 +2,8 @@ import RandJS from '../src/rand';
 
 'use strict';
 
+// some helper functions for testing
+
 function average (arr) {
     return arr.reduce((a,b) => {return a + b;}) / arr.length;
 }
