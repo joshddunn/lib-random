@@ -1,4 +1,4 @@
-import UINT64 from 'cuint/lib/uint64';
+import Long from 'long';
 
 export default class RandJS {
 
@@ -8,10 +8,11 @@ export default class RandJS {
         this.modulus = 2147483647;
         this.multiplier = 16807;
 
-        this.pcgIncrement = UINT64(1);
-        this.pcgMultiplier = UINT64('6364136223846793005');
-        this.pcgState = UINT64(this.seed);
-        this.max32Bit = 2 ** 32;
+        this.pcgIncrement = Long.fromInt(1, true);
+        this.pcgMultiplier = Long.fromString('6364136223846793005', true);
+        this.pcgState = Long.fromInt(this.seed, true);
+
+        this.max32Bit = 4294967296; // 2 ** 32;
     }
 
     _next() {
@@ -24,38 +25,32 @@ export default class RandJS {
     }
 
     _nextState() {
-        this.pcgState.multiply(this.pcgMultiplier).add(this.pcgIncrement);
+        this.pcgState = this.pcgState.multiply(this.pcgMultiplier).add(this.pcgIncrement);
     }
 
     _pcg() {
         this._nextState();
-
-        // output = state >> (29 - (state >> 61))
-        // 23 seconds for 50 million
-        return this.pcgState.clone().shiftr(29 - this.pcgState.clone().shiftr(61).toNumber()).toNumber();
-
-        // output = (state ^ (state >> 22)) >> (22 + (state >> 61))
-        // 35 seconds for 50 million
-        // var left = this.pcgState.clone().xor(this.pcgState.clone().shiftr(22));
-        // var right = 22 + this.pcgState.clone().shiftr(61).toNumber();
-
-        // return left.shiftr(right).toNumber();
+        return this.pcgState.shiftRightUnsigned(29 - this.pcgState.shiftRightUnsigned(61).toInt()).toInt();
     }
 
     _pcgFloat() {
         return this._pcg() / this.max32Bit;
     }
 
-    randPcg(a = 0, b = 1) {
-        return a + (b - a) * this._pcgFloat();
-    }
-
     rand(a = 0, b = 1) {
         return a + (b - a) * (this._next() / this.modulus);
     }
 
+    randPcg(a = 0, b = 1) {
+        return a + (b - a) * this._pcgFloat();
+    }
+
     randInt(a = 0, b = this.modulus - 1) {
         return a + this._next() % (b + 1 - a);
+    }
+
+    randIntPcg(a = 0, b = this.max32Bit - 1) {
+        return a + this._pcg() % (b + 1 - a);
     }
 
     manyRand(n, a = 0, b = 1) {
@@ -68,5 +63,9 @@ export default class RandJS {
 
     manyRandInt(n, a = 0, b = this.modulus - 1) {
         return this._many(n, () => this.randInt(a, b));
+    }
+
+    manyRandIntPcg(n, a = 0, b = this.max32Bit - 1) {
+        return this._many(n, () => this.randIntPcg(a, b));
     }
 }
