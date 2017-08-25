@@ -104,4 +104,12 @@ describe('RandJS:', () => {
         expect(average(num) - 0.5).toBeLessThan(0.01);
         expect(variance(num) - 1/12).toBeLessThan(0.01);
     });
+
+    it('rand pcg ziggurat algorithm for normal distribution', () => {
+        const r = new RandJS();
+        var num = r.manyRandPcgNormal(5000);
+
+        expect(Math.abs(average(num)) - 0).toBeLessThan(0.1);
+        expect(variance(num) - 1).toBeLessThan(0.1);
+    });
 });

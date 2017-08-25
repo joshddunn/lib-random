@@ -37,12 +37,73 @@ export default class RandJS {
         return this._pcg() / this.max32Bit;
     }
 
+    _ziggurat(mean = 0, variance = 1) {
+        const f = function (x) {
+            return Math.exp(- x * x / 2);
+        }
+
+        const finv = function (y) {
+            return Math.sqrt(- 2 * Math.log(y));
+        }
+
+        const height = function (layer) {
+            var y = f(r);
+            var x = r;
+            for (var i = 2; i <= layer; i++) {
+                y = y + (f(r) * r) / x;
+                x = finv(y);
+            }
+
+            return y;
+        }
+
+        // the areas are all fucked up
+        while (true) {
+            var r = 3.65415288536;
+
+            var layer = this.randIntPcg(0, 255);
+
+            // rectangles need to be of all equal area
+            var yi = height(layer);
+            var yip1 = height(layer + 1);
+
+            var xi = finv(yi);
+            var xip1 = finv(yip1);
+
+            var x = this.randPcg() * xi;
+
+            if (x < xip1) {
+                return this.randIntPcg(0, 1) === 0 ? x : - x;
+            }
+
+            if (layer == 0) {
+                while (true) {
+                    var x = - Math.log(this.randPcg()) / r;
+                    var y = - Math.log(this.randPcg());
+
+                    if (2 * y > x * x) {
+                        return this.randIntPcg(0, 1) === 0 ? x + r : - x - r;
+                    }
+                }
+            }
+
+            var y = yi + this.randPcg() * (yip1 - yi);
+            if (y < f(x)) {
+                return this.randIntPcg(0, 1) === 0 ? x : - x;
+            }
+        }
+    }
+
     rand(a = 0, b = 1) {
         return a + (b - a) * (this._next() / this.modulus);
     }
 
     randPcg(a = 0, b = 1) {
         return a + (b - a) * this._pcgFloat();
+    }
+
+    randPcgNormal(mean = 0, variance = 1) {
+        return this._ziggurat(mean, variance);
     }
 
     randInt(a = 0, b = this.modulus - 1) {
@@ -67,5 +128,9 @@ export default class RandJS {
 
     manyRandIntPcg(n, a = 0, b = this.max32Bit - 1) {
         return this._many(n, () => this.randIntPcg(a, b));
+    }
+
+    manyRandPcgNormal(n, mean = 0, variance = 1) {
+        return this._many(n, () => this.randPcgNormal(mean, variance));
     }
 }
