@@ -31,20 +31,22 @@ export default class RandJS {
         this._nextState();
 
         // output = state >> (29 - (state >> 61))
-        // return this.pcgState.clone().shiftr(29 - this.pcgState.clone().shiftr(61).toNumber()).toNumber();
+        // 23 seconds for 50 million
+        return this.pcgState.clone().shiftr(29 - this.pcgState.clone().shiftr(61).toNumber()).toNumber();
 
         // output = (state ^ (state >> 22)) >> (22 + (state >> 61))
-        var left = this.pcgState.clone().xor(this.pcgState.clone().shiftr(22));
-        var right = 22 + this.pcgState.clone().shiftr(61).toNumber();
+        // 35 seconds for 50 million
+        // var left = this.pcgState.clone().xor(this.pcgState.clone().shiftr(22));
+        // var right = 22 + this.pcgState.clone().shiftr(61).toNumber();
 
-        return left.shiftr(right).toNumber();
+        // return left.shiftr(right).toNumber();
     }
 
     _pcgFloat() {
         return this._pcg() / this.max32Bit;
     }
 
-    randpcg(a = 0, b = 1) {
+    randPcg(a = 0, b = 1) {
         return a + (b - a) * this._pcgFloat();
     }
 
@@ -61,7 +63,7 @@ export default class RandJS {
     }
 
     manyRandPcg(n, a = 0, b = 1) {
-        return this._many(n, () => this.randpcg(a, b));
+        return this._many(n, () => this.randPcg(a, b));
     }
 
     manyRandInt(n, a = 0, b = this.modulus - 1) {
