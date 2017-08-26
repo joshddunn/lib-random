@@ -46,7 +46,7 @@ n Random integers on the interval [a, b] (Output is an array)
 
 We use the [ziggurat algorithm](https://en.wikipedia.org/wiki/Ziggurat_algorithm) to sample random numbers. 
 
-I think there may be a bug here, the variance a slight positive bias.
+_I think there may be a bug here, the variance has a slight positive bias._
 
 ### Using PCG
 
