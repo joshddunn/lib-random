@@ -67,11 +67,11 @@ n Random floating point numbers on the interval [a, b) (Output is an array)
     
 Random integers on the interval [a, b] (Output is a number)
 
-    RandJS.randIntPcg(a = 0, b = 2147483647 - 1)
+    RandJS.randIntPcg(a = 0, b = 2 ** 32 - 1)
     
 n Random integers on the interval [a, b] (Output is an array)
 
-    RandJS.manyRandIntPcg(n, a = 0, b = 2147483647 - 1)
+    RandJS.manyRandIntPcg(n, a = 0, b = 2 ** 32 - 1)
 
 ## Normal Distribution
 
