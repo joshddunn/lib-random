@@ -109,6 +109,7 @@ describe('RandJS:', () => {
         const r = new RandJS();
         var num = r.manyRandPcgNormal(5000);
 
+        console.log(Math.max(...num));
 
         // console.log(average(num));
         // console.log(variance(num));
