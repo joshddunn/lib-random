@@ -27,7 +27,7 @@ Given an arrany, k entries will be returned uniformly at random with or without 
 
     RandJS.chooseMany(arr, k, replacement = false)
 
-The elements in an array will be shuffled
+The elements in an array will be shuffled (Output is an array)
 
     RandJS.shuffle(arr)
 
@@ -103,10 +103,10 @@ n Random integers (Output is an array)
 
 Random floating point numbers (Output is a number)
 
-    RandJS.randPcgExponential(mean = 0, variance = 1)
+    RandJS.randPcgExponential(lambda = 1)
 
 n Random floating point numbers (Output is an array)
 
-    RandJS.manyRandPcgExponential(n, mean = 0, variance = 1)
+    RandJS.manyRandPcgExponential(n, lambda = 1)
 
 
