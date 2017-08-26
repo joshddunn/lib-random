@@ -109,7 +109,22 @@ describe('RandJS:', () => {
         const r = new RandJS();
         var num = r.manyRandPcgNormal(5000);
 
-        expect(Math.abs(average(num)) - 0).toBeLessThan(0.1);
-        expect(variance(num) - 1).toBeLessThan(0.1);
+
+        // console.log(average(num));
+        // console.log(variance(num));
+
+        expect(Math.abs(average(num))).toBeLessThan(0.05);
+        expect(Math.abs(variance(num) - 1)).toBeLessThan(0.1);
+    });
+
+    it('rand pcg ziggurat algorithm for normal distribution', () => {
+        const r = new RandJS();
+        var num = r.manyRandIntPcgNormal(5000);
+
+        // console.log(average(num));
+        // console.log(variance(num));
+
+        expect(Math.abs(average(num))).toBeLessThan(0.05);
+        expect(Math.abs(variance(num) - 1)).toBeLessThan(0.15);
     });
 });

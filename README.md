@@ -41,3 +41,27 @@ Random integers on the interval [a, b] (Output is a number)
 n Random integers on the interval [a, b] (Output is an array)
 
     RandJS.manyRandIntPcg(n, a = 0, b = 2147483647 - 1)
+
+## Normal Distribution
+
+We use the [ziggurat algorithm](https://en.wikipedia.org/wiki/Ziggurat_algorithm) to sample random numbers. 
+
+I think there may be a bug here, the variance a slight positive bias.
+
+### Using PCG
+
+Random floating point numbers (Output is a number)
+
+    RandJS.randPcgNormal(mean = 0, variance = 1)
+
+n Random floating point numbers (Output is an array)
+
+    RandJS.manyRandPcgNormal(mean = 0, variance = 1)
+
+Random integers (Output is a number)
+
+    RandJS.randIntPcgNormal(mean = 0, variance = 1)
+
+n Random integers (Output is an array)
+
+    RandJS.randIntPcgNormal(mean = 0, variance = 1)

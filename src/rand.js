@@ -13,6 +13,11 @@ export default class RandJS {
         this.pcgState = Long.fromInt(this.seed, true);
 
         this.max32Bit = 4294967296; // 2 ** 32;
+
+        this.r = 3.65415288536101;
+        this.A = 0.00492867323399;
+
+        this.zigguratBoxCoords = null;
     }
 
     _next() {
@@ -37,61 +42,68 @@ export default class RandJS {
         return this._pcg() / this.max32Bit;
     }
 
-    _ziggurat(mean = 0, variance = 1) {
-        const f = function (x) {
-            return Math.exp(- x * x / 2);
-        }
+    _normalPdf(x) {
+        return Math.exp(- x * x / 2);
+    }
 
-        const finv = function (y) {
-            return Math.sqrt(- 2 * Math.log(y));
-        }
+    _normalPdfInverse(y) {
+        return Math.sqrt(- 2 * Math.log(y));
+    }
 
-        const height = function (layer) {
-            var y = f(r);
-            var x = r;
-            for (var i = 2; i <= layer; i++) {
-                y = y + (f(r) * r) / x;
-                x = finv(y);
-            }
+    _buildZigguratBoxCoords () {
+        this.zigguratBoxCoords = new Array(257).fill(0);
 
-            return y;
-        }
+        this.zigguratBoxCoords[0] = {
+            x: this.r / this._normalPdf(this.r),
+            y: 0
+        };
 
-        // the areas are all fucked up
-        while (true) {
-            var r = 3.65415288536;
+        this.zigguratBoxCoords[1] = {
+            x: this.r,
+            y: this._normalPdf(this.r)
+        };
 
-            var layer = this.randIntPcg(0, 255);
-
-            // rectangles need to be of all equal area
-            var yi = height(layer);
-            var yip1 = height(layer + 1);
-
-            var xi = finv(yi);
-            var xip1 = finv(yip1);
-
-            var x = this.randPcg() * xi;
-
-            if (x < xip1) {
-                return this.randIntPcg(0, 1) === 0 ? x : - x;
-            }
-
-            if (layer == 0) {
-                while (true) {
-                    var x = - Math.log(this.randPcg()) / r;
-                    var y = - Math.log(this.randPcg());
-
-                    if (2 * y > x * x) {
-                        return this.randIntPcg(0, 1) === 0 ? x + r : - x - r;
-                    }
-                }
-            }
-
-            var y = yi + this.randPcg() * (yip1 - yi);
-            if (y < f(x)) {
-                return this.randIntPcg(0, 1) === 0 ? x : - x;
+        for (var i = 2; i < this.zigguratBoxCoords.length - 1; i++) {
+            let y = this.zigguratBoxCoords[i-1].y + this.A / this.zigguratBoxCoords[i-1].x;
+            this.zigguratBoxCoords[i] = {
+                x: this._normalPdfInverse(y),
+                y: y
             }
         }
+
+        this.zigguratBoxCoords[256] = {
+            x: 0,
+            y: 1
+        };
+    }
+
+    _zigguratTails() {
+        let x = - Math.log(this.randPcg()) / this.r;
+        let y = - Math.log(this.randPcg());
+
+        if (y + y > x * x) {
+            return this.randIntPcg(0, 1) === 0 ? x + this.r : x - this.r;
+        } else {
+            return this._zigguratTails();
+        }
+    }
+
+    _ziggurat() {
+        let layer = this.randIntPcg(0, 255);
+
+        let point_i  = this.zigguratBoxCoords[layer];
+        let point_ip = this.zigguratBoxCoords[layer + 1];
+
+        let x = this.randPcg(-1, 1) * point_i.x;
+        let y = point_i.y + this.randPcg() * (point_ip.y - point_i.y);
+
+        if (Math.abs(x) < point_ip.x) return x;
+
+        if (layer == 0) return this._zigguratTails();
+
+        if (y < this._normalPdf(x)) return x;
+
+        return this._ziggurat();
     }
 
     rand(a = 0, b = 1) {
@@ -103,7 +115,12 @@ export default class RandJS {
     }
 
     randPcgNormal(mean = 0, variance = 1) {
-        return this._ziggurat(mean, variance);
+        if (this.zigguratBoxCoords === null) this._buildZigguratBoxCoords();
+        return (this._ziggurat() - mean) / Math.sqrt(variance);
+    }
+
+    randIntPcgNormal(mean = 0, variance = 1) {
+        return Math.floor(0.5 + this.randPcgNormal(mean, variance));
     }
 
     randInt(a = 0, b = this.modulus - 1) {
@@ -132,5 +149,9 @@ export default class RandJS {
 
     manyRandPcgNormal(n, mean = 0, variance = 1) {
         return this._many(n, () => this.randPcgNormal(mean, variance));
+    }
+
+    manyRandIntPcgNormal(n, mean = 0, variance = 1) {
+        return this._many(n, () => this.randIntPcgNormal(mean, variance));
     }
 }
