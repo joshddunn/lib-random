@@ -19,8 +19,6 @@ Currently, this library uses a [linear congruential generator](https://en.wikipe
 
 ## Utilities
 
-### Choice
-
 Given an array, one entry will be returned uniformly at random (Output is an element of the array)
 
     RandJS.choose(arr)
