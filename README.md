@@ -17,6 +17,26 @@ Currently, this library uses a [linear congruential generator](https://en.wikipe
 
     new RandJS(seed = Date().now)
 
+## Utilities
+
+### Choice
+
+Given an array, one entry will be returned uniformly at random (Output is an element of the array)
+
+    RandJS.choose(arr)
+
+Given an arrany, k entries will be returned uniformly at random with or without replacement (Output is an array)
+
+    RandJS.chooseMany(arr, k, replacement = false)
+
+The elements in an array will be shuffled
+
+    RandJS.shuffle(arr)
+
+A random colorCode will be returned in the form, '#bada55' (Output is a string)
+
+    RandJS.colorCode()
+
 ## Uniform Distribution
 
 ### Using LCG (incredibly fast)
@@ -69,7 +89,7 @@ Random floating point numbers (Output is a number)
 
 n Random floating point numbers (Output is an array)
 
-    RandJS.manyRandPcgNormal(mean = 0, variance = 1)
+    RandJS.manyRandPcgNormal(n, mean = 0, variance = 1)
 
 Random integers (Output is a number)
 
@@ -77,4 +97,18 @@ Random integers (Output is a number)
 
 n Random integers (Output is an array)
 
-    RandJS.randIntPcgNormal(mean = 0, variance = 1)
+    RandJS.randIntPcgNormal(n, mean = 0, variance = 1)
+
+## Exponential Distribution
+
+### Using PCG
+
+Random floating point numbers (Output is a number)
+
+    RandJS.randPcgExponential(mean = 0, variance = 1)
+
+n Random floating point numbers (Output is an array)
+
+    RandJS.manyRandPcgExponential(n, mean = 0, variance = 1)
+
+

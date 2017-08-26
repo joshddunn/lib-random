@@ -101,15 +101,15 @@ describe('RandJS:', () => {
         const r = new RandJS();
         var num = r.manyRandPcg(5000);
 
-        expect(average(num) - 0.5).toBeLessThan(0.01);
-        expect(variance(num) - 1/12).toBeLessThan(0.01);
+        expect(average(num) - 0.5).toBeLessThan(0.05);
+        expect(variance(num) - 1/12).toBeLessThan(0.05);
     });
 
     it('rand pcg ziggurat algorithm for normal distribution', () => {
         const r = new RandJS();
         var num = r.manyRandPcgNormal(5000);
 
-        console.log(Math.max(...num));
+        // console.log(Math.max(...num));
 
         // console.log(average(num));
         // console.log(variance(num));
@@ -128,4 +128,72 @@ describe('RandJS:', () => {
         expect(Math.abs(average(num))).toBeLessThan(0.05);
         expect(Math.abs(variance(num) - 1)).toBeLessThan(0.15);
     });
+
+    it('rand float pcg exponential distribution', () => {
+        const r = new RandJS();
+        var num = r.manyRandPcgExponential(5000);
+
+        expect(Math.abs(average(num) - 1)).toBeLessThan(0.1);
+        expect(Math.abs(variance(num) - 1)).toBeLessThan(0.1);
+    });
+
+    it('testing choice', () => {
+        const r = new RandJS();
+        var arr = [1, 'a', {}];
+        var num = r.choose(arr);
+        var set = new Set();
+
+        for (var i = 0; i < 100; i++) {
+            set.add(r.choose(arr));
+        }
+
+        expect(arr.includes(num)).toBe(true);
+        expect(set.has(arr[0])).toBe(true);
+        expect(set.has(arr[1])).toBe(true);
+        expect(set.has(arr[2])).toBe(true);
+
+    });
+
+    it('testing choose many', () => {
+        const r = new RandJS();
+        var arr = [1,2,3,4,5];
+        var num = r.chooseMany(arr, 3);
+        var set = new Set(num);
+
+        // without replacement
+        expect(num.length).toBe(3);
+        expect(set.size).toBe(3);
+        expect(() => {
+            r.chooseMany(arr, 6);
+        }).toThrow(new Error('Invalid parameter set'));
+        expect(() => {
+            r.chooseMany(arr, -1);
+        }).toThrow(new Error('Invalid parameter set'));
+
+        // with replacement
+        expect(r.chooseMany(arr, 20, true).length).toBe(20);
+        expect(() => {
+            r.chooseMany(arr, -1, true);
+        }).toThrow(new Error('Invalid parameter set'));
+    });
+
+    it('testing colorcode', () => {
+        const r = new RandJS();
+        var num = r.colorCode();
+
+        expect(num[0]).toBe('#');
+        expect(num.search(/[^g-z]/)).toBe(0);
+        expect(num.length).toBe(7);
+    });
+
+    it('testing shuffle', () => {
+        const r = new RandJS();
+        var arr = [1,2,3,4,5,6,7,8,9,10];
+        var num = r.shuffle(arr);
+
+        expect(arr).not.toBe(num);
+        expect(arr.length).toBe(num.length);
+        expect(new Set(arr).size).toBe(new Set(num).size);
+    });
+
 });

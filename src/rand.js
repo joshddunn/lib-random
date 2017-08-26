@@ -131,6 +131,10 @@ export default class RandJS {
         return a + this._pcg() % (b + 1 - a);
     }
 
+    randPcgExponential(lambda = 1) {
+        return - Math.log(1 - this.randPcg()) / lambda;
+    }
+
     manyRand(n, a = 0, b = 1) {
         return this._many(n, () => this.rand(a, b));
     }
@@ -153,5 +157,43 @@ export default class RandJS {
 
     manyRandIntPcgNormal(n, mean = 0, variance = 1) {
         return this._many(n, () => this.randIntPcgNormal(mean, variance));
+    }
+
+    manyRandPcgExponential(n, lambda = 1) {
+        return this._many(n, () => this.randPcgExponential(lambda));
+    }
+
+    choose(arr) {
+        return arr[this.randIntPcg(0, arr.length - 1)];
+    }
+
+    chooseMany(arr, k, replacement = false) {
+        let marr = [...arr];
+
+        if (k < 0 || (k > arr.length && !replacement)) {
+            throw new Error('Invalid parameter set');
+        }
+
+        let out = [];
+        for (var i = 0; i < k; i++) {
+            let idx = this.randIntPcg(0, marr.length - 1);
+            out.push(marr[idx]);
+
+            if (!replacement) marr.splice(idx, 1);
+        }
+
+        return out;
+    }
+
+    shuffle(arr) {
+        return this.chooseMany(arr, arr.length);
+    }
+
+    _getColor() {
+        return ("0" + this.randIntPcg(0, 255).toString(16)).slice(-2);
+    }
+
+    colorCode() {
+        return '#' + this._getColor() + this._getColor() + this._getColor();
     }
 }
