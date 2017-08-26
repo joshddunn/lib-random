@@ -3,7 +3,20 @@
 rand.js is a seeded pseudorandom number generator for many distributions.
 
 Currently, this library uses a [linear congruential generator](https://en.wikipedia.org/wiki/Linear_congruential_generator), but looks to incorporate the [PCG Family](http://www.pcg-random.org) of generators in the future.
+
+# Usage
+
+    import RandJS from 'randjs';
     
+    var r = new RandJS(1);
+    console.log(r.rand());
+    
+    ...
+    
+# API
+
+    new RandJS(seed = Date().now)
+
 ## Uniform Distribution
 
 ### Using LCG (incredibly fast)
@@ -46,7 +59,7 @@ n Random integers on the interval [a, b] (Output is an array)
 
 We use the [ziggurat algorithm](https://en.wikipedia.org/wiki/Ziggurat_algorithm) to sample random numbers. 
 
-I think there may be a bug here, the variance a slight positive bias.
+_I think there may be a bug here, the variance has a slight positive bias._
 
 ### Using PCG
 
