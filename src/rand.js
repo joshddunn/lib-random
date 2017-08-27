@@ -14,8 +14,13 @@ export default class RandJS {
 
         this.max32Bit = 4294967296; // 2 ** 32;
 
-        this.r = 3.65415288536101;
-        this.A = 0.00492867323399;
+        // this.r = 3.65415288536101;
+        // this.A = 0.00492867323399;
+        // this.layers = 0.00492867323399;
+
+        this.r = 3.8520461503683916;
+        this.A = 0.0024567663515413;
+        this.layers = 512;
 
         this.zigguratBoxCoords = null;
     }
@@ -51,7 +56,7 @@ export default class RandJS {
     }
 
     _buildZigguratBoxCoords () {
-        this.zigguratBoxCoords = new Array(257).fill(0);
+        this.zigguratBoxCoords = new Array(this.layers + 1).fill(0);
 
         this.zigguratBoxCoords[0] = {
             x: this.r / this._normalPdf(this.r),
@@ -71,7 +76,7 @@ export default class RandJS {
             }
         }
 
-        this.zigguratBoxCoords[256] = {
+        this.zigguratBoxCoords[this.layers] = {
             x: 0,
             y: 1
         };
@@ -89,7 +94,7 @@ export default class RandJS {
     }
 
     _ziggurat() {
-        let layer = this.randIntPcg(0, 255);
+        let layer = this.randIntPcg(0, this.layers - 1);
 
         let point_i  = this.zigguratBoxCoords[layer];
         let point_ip = this.zigguratBoxCoords[layer + 1];
@@ -106,6 +111,8 @@ export default class RandJS {
         return this._ziggurat();
     }
 
+    // incorporate box-muller
+
     rand(a = 0, b = 1) {
         return a + (b - a) * (this._next() / this.modulus);
     }
@@ -116,7 +123,7 @@ export default class RandJS {
 
     randPcgNormal(mean = 0, variance = 1) {
         if (this.zigguratBoxCoords === null) this._buildZigguratBoxCoords();
-        return (this._ziggurat() - mean) / Math.sqrt(variance);
+        return this._ziggurat() * Math.sqrt(variance) + mean;
     }
 
     randIntPcgNormal(mean = 0, variance = 1) {

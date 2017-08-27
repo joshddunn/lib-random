@@ -10,7 +10,7 @@ function average (arr) {
 
 function variance (arr) {
     var average = arr.reduce((a,b) => {return a + b;}) / arr.length;
-    return arr.reduce((a,b) => {return a + (b - average) ** 2;}) / arr.length;
+    return arr.reduce((a,b) => {return a + (b - average) ** 2;}, 0) / arr.length;
 }
 
 describe('RandJS:', () => {
@@ -107,18 +107,35 @@ describe('RandJS:', () => {
 
     it('rand pcg ziggurat algorithm for normal distribution', () => {
         const r = new RandJS();
-        var num = r.manyRandPcgNormal(5000);
+        var num = [];//r.manyRandPcgNormal(5000);
+
+        for (var i = 0; i < 10000000; i++) {
+            num.push(r.randPcgNormal());
+        }
 
         // console.log(Math.max(...num));
 
-        // console.log(average(num));
-        // console.log(variance(num));
+        console.log(average(num));
+        console.log(variance(num));
 
         expect(Math.abs(average(num))).toBeLessThan(0.05);
         expect(Math.abs(variance(num) - 1)).toBeLessThan(0.1);
     });
 
-    it('rand pcg ziggurat algorithm for normal distribution', () => {
+    it('rand pcg ziggurat algorithm for normal distribution, mean = 4, variance = 10', () => {
+        const r = new RandJS();
+        var m = 4;
+        var v = 10;
+        var num = r.manyRandPcgNormal(5000, m, v);
+
+        // console.log(average(num));
+        // console.log(variance(num));
+
+        expect(Math.abs(average(num) - m)).toBeLessThan(0.05);
+        expect(Math.abs(variance(num) - v)).toBeLessThan(0.1);
+    });
+
+    it('rand int pcg ziggurat algorithm for normal distribution', () => {
         const r = new RandJS();
         var num = r.manyRandIntPcgNormal(5000);
 
@@ -135,6 +152,18 @@ describe('RandJS:', () => {
 
         expect(Math.abs(average(num) - 1)).toBeLessThan(0.1);
         expect(Math.abs(variance(num) - 1)).toBeLessThan(0.1);
+    });
+
+    it('rand float pcg exponential distribution, lambda 7', () => {
+        const r = new RandJS();
+        let lambda = 7;
+        var num = r.manyRandPcgExponential(5000, lambda);
+
+        // console.log(average(num));
+        // console.log(variance(num));
+
+        expect(Math.abs(average(num) - 1 / lambda)).toBeLessThan(0.1);
+        expect(Math.abs(variance(num) - 1 / (lambda ** 2) )).toBeLessThan(0.1);
     });
 
     it('testing choice', () => {
