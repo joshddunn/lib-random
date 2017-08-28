@@ -6,13 +6,23 @@ This library uses a generator from the [PCG Family](http://www.pcg-random.org).
 
 # Usage
 
+### ES6
+
     import LibRandom from 'lib-random';
     
     var r = new LibRandom(1);
     console.log(r.rand());
     
     ...
-    
+
+### ES5 in RunKit + npm
+
+    var LibRandom = require("lib-random").default
+
+    var r = new LibRandom(1)
+
+    console.log(r.rand())    
+
 # API
 
     new LibRandom(seed = Date().now)
