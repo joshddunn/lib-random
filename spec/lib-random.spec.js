@@ -1,4 +1,4 @@
-import RandJS from '../src/rand';
+import LibRandom from '../src/lib-random';
 
 'use strict';
 
@@ -13,20 +13,20 @@ function variance (arr) {
     return arr.reduce((a,b) => {return a + (b - average) ** 2;}, 0) / arr.length;
 }
 
-describe('RandJS:', () => {
+describe('LibRandom:', () => {
 
     it('default seed value', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         expect(r.seed <= Date.now()).toBe(true);
     });
 
     it('setting seed value', () => {
-        const r = new RandJS(1);
+        const r = new LibRandom(1);
         expect(r.seed).toEqual(1);
     });
 
     it('rand pcg testing floats [0, 1)', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         var num = r.manyRand(100000);
 
         expect(Math.max(...num) < 1).toBe(true);
@@ -34,7 +34,7 @@ describe('RandJS:', () => {
     });
 
     it('rand pcg testing floats [10, 100)', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         var num = r.manyRand(100000, 10, 100);
 
         expect(Math.max(...num) < 100).toBe(true);
@@ -42,7 +42,7 @@ describe('RandJS:', () => {
     });
 
     it('rand pcg testing ints [0, randMax)', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         var num = r.manyRandInt(100000);
 
         expect(Math.max(...num) >= 0).toBe(true);
@@ -50,7 +50,7 @@ describe('RandJS:', () => {
     });
 
     it('rand pcg testing ints [10, 11]', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         var num = r.manyRandInt(100000, 10, 11);
 
         expect(num.indexOf(10)).not.toBe(-1);
@@ -58,7 +58,7 @@ describe('RandJS:', () => {
     });
 
     it('rand pcg average and variance testing', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         var num = r.manyRand(100000);
 
         expect(average(num) - 0.5).toBeLessThan(0.01);
@@ -66,7 +66,7 @@ describe('RandJS:', () => {
     });
 
     it('rand pcg algorithm for normal distribution', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         var num = r.manyRandNormal(1000000);
 
         // console.log(average(num));
@@ -77,7 +77,7 @@ describe('RandJS:', () => {
     });
 
     it('rand pcg algorithm for normal distribution, mean = 4, variance = 10', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         var m = 4;
         var v = 10;
         var num = r.manyRandNormal(1000000, m, v);
@@ -90,7 +90,7 @@ describe('RandJS:', () => {
     });
 
     it('rand int pcg algorithm for normal distribution', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         var num = r.manyRandIntNormal(100000);
 
         // console.log(average(num));
@@ -101,7 +101,7 @@ describe('RandJS:', () => {
     });
 
     it('rand float pcg exponential distribution', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         var num = r.manyRandExponential(100000);
 
         expect(Math.abs(average(num) - 1)).toBeLessThan(0.01);
@@ -109,7 +109,7 @@ describe('RandJS:', () => {
     });
 
     it('rand float pcg exponential distribution, lambda 7', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         let lambda = 7;
         var num = r.manyRandExponential(100000, lambda);
 
@@ -121,7 +121,7 @@ describe('RandJS:', () => {
     });
 
     it('testing choice', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         var arr = [1, 'a', {}];
         var num = r.choose(arr);
         var set = new Set();
@@ -138,7 +138,7 @@ describe('RandJS:', () => {
     });
 
     it('testing choose many', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         var arr = [1,2,3,4,5];
         var num = r.chooseMany(arr, 3);
         var set = new Set(num);
@@ -161,7 +161,7 @@ describe('RandJS:', () => {
     });
 
     it('testing colorcode', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         var num = r.colorCode();
 
         expect(num[0]).toBe('#');
@@ -170,7 +170,7 @@ describe('RandJS:', () => {
     });
 
     it('testing shuffle', () => {
-        const r = new RandJS();
+        const r = new LibRandom();
         var arr = [1,2,3,4,5,6,7,8,9,10];
         var num = r.shuffle(arr);
 

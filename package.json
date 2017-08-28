@@ -1,15 +1,16 @@
 {
-  "name": "randjs",
+  "name": "lib-random",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A seeded pseudorandom number generator from the PCG family with support for various distributions. A suite of utility functions are also included.",
+  "main": "lib-random.js",
   "scripts": {
     "clear": "rm -rf node_modules/",
     "test": "babel-node spec/run.js",
-    "build": "babel src -o lib/rand.js",
-    "build-min": "BABEL_ENV=production babel src -o lib/rand.min.js"
+    "build": "babel src -o lib/lib-random.js",
+    "build-min": "BABEL_ENV=production babel src -o lib/lib-random.min.js"
   },
-  "author": "",
+  "author": "Josh D. Dunn",
+  "url": "https://github.com/joshddun/lib-random",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
