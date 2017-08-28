@@ -1,7 +1,15 @@
 {
   "name": "lib-random",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A seeded pseudorandom number generator from the PCG family with support for various distributions. A suite of utility functions are also included.",
+  "keywords": [
+      "pcg",
+      "random",
+      "seed",
+      "gaussian",
+      "normal",
+      "rng"
+    ],
   "main": "lib-random.js",
   "scripts": {
     "clear": "rm -rf node_modules/",
@@ -10,7 +18,10 @@
     "build-min": "BABEL_ENV=production babel src -o lib/lib-random.min.js"
   },
   "author": "Josh D. Dunn",
-  "url": "https://github.com/joshddun/lib-random",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/joshddun/lib-random.git"
+  },
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -20,5 +31,9 @@
   },
   "dependencies": {
     "long": "^3.2.0"
+  },
+  "homepage": "https://github.com/joshddun/lib-random",
+  "bugs": {
+    "url": "https://github.com/joshddun/lib-random/issues"
   }
 }
