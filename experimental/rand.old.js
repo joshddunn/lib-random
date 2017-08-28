@@ -25,9 +25,49 @@ describe('RandJS:', () => {
         expect(r.seed).toEqual(1);
     });
 
+    it('check default float values are between 0 and 1', () => {
+        const r = new RandJS();
+        var num = r.manyRand(1000);
+
+        expect(Math.max(...num) < 1).toBe(true);
+        expect(Math.min(...num) >= 0).toBe(true);
+    });
+
+    it('check float values are between 10 and 100', () => {
+        const r = new RandJS();
+        var num = r.manyRand(1000, 10, 100);
+
+        expect(Math.max(...num) < 100).toBe(true);
+        expect(Math.min(...num) >= 10).toBe(true);
+    });
+
+    it('check default int values are between 0 and randMax', () => {
+        const r = new RandJS();
+        var num = r.manyRandInt(1000);
+
+        expect(Math.max(...num) <= r.modulus).toBe(true);
+        expect(Math.min(...num) >= 10).toBe(true);
+    });
+
+    it('check int values are between 10 and 100, inclusive', () => {
+        const r = new RandJS();
+        var num = r.manyRandInt(1000, 10, 100);
+
+        expect(Math.max(...num) <= 100).toBe(true);
+        expect(Math.min(...num) >= 10).toBe(true);
+    });
+
+    it('check int values are inclusive', () => {
+        const r = new RandJS();
+        var num = r.manyRandInt(1000, 10, 11);
+
+        expect(num.indexOf(10)).not.toBe(-1);
+        expect(num.indexOf(11)).not.toBe(-1);
+    });
+
     it('rand pcg testing floats [0, 1)', () => {
         const r = new RandJS();
-        var num = r.manyRand(100000);
+        var num = r.manyRandPcg(1000);
 
         expect(Math.max(...num) < 1).toBe(true);
         expect(Math.min(...num) >= 0).toBe(true);
@@ -35,7 +75,7 @@ describe('RandJS:', () => {
 
     it('rand pcg testing floats [10, 100)', () => {
         const r = new RandJS();
-        var num = r.manyRand(100000, 10, 100);
+        var num = r.manyRandPcg(1000, 10, 100);
 
         expect(Math.max(...num) < 100).toBe(true);
         expect(Math.min(...num) >= 10).toBe(true);
@@ -43,7 +83,7 @@ describe('RandJS:', () => {
 
     it('rand pcg testing ints [0, randMax)', () => {
         const r = new RandJS();
-        var num = r.manyRandInt(100000);
+        var num = r.manyRandIntPcg(1000);
 
         expect(Math.max(...num) >= 0).toBe(true);
         expect(Math.min(...num) < 2 ** 32).toBe(true);
@@ -51,7 +91,7 @@ describe('RandJS:', () => {
 
     it('rand pcg testing ints [10, 11]', () => {
         const r = new RandJS();
-        var num = r.manyRandInt(100000, 10, 11);
+        var num = r.manyRandIntPcg(1000, 10, 11);
 
         expect(num.indexOf(10)).not.toBe(-1);
         expect(num.indexOf(11)).not.toBe(-1);
@@ -59,15 +99,21 @@ describe('RandJS:', () => {
 
     it('rand pcg average and variance testing', () => {
         const r = new RandJS();
-        var num = r.manyRand(100000);
+        var num = r.manyRandPcg(5000);
 
-        expect(average(num) - 0.5).toBeLessThan(0.01);
-        expect(variance(num) - 1/12).toBeLessThan(0.01);
+        expect(average(num) - 0.5).toBeLessThan(0.05);
+        expect(variance(num) - 1/12).toBeLessThan(0.05);
     });
 
-    it('rand pcg algorithm for normal distribution', () => {
+    it('rand pcg ziggurat algorithm for normal distribution', () => {
         const r = new RandJS();
-        var num = r.manyRandNormal(1000000);
+        var num = [];//r.manyRandPcgNormal(5000);
+
+        for (var i = 0; i < 1000000; i++) {
+            num.push(r.randPcgNormal());
+        }
+
+        // console.log(Math.max(...num));
 
         // console.log(average(num));
         // console.log(variance(num));
@@ -76,48 +122,53 @@ describe('RandJS:', () => {
         expect(Math.abs(variance(num) - 1)).toBeLessThan(0.01);
     });
 
-    it('rand pcg algorithm for normal distribution, mean = 4, variance = 10', () => {
+    it('rand pcg ziggurat algorithm for normal distribution, mean = 4, variance = 10', () => {
         const r = new RandJS();
         var m = 4;
         var v = 10;
-        var num = r.manyRandNormal(1000000, m, v);
+        // var num = r.manyRandPcgNormal(5000, m, v);
+
+        var num = [];
+        for (var i = 0; i < 1000000; i++) {
+            num.push(r.randPcgNormal(m, v));
+        }
 
         // console.log(average(num));
         // console.log(variance(num));
 
-        expect(Math.abs(average(num) - m)).toBeLessThan(0.02);
-        expect(Math.abs(variance(num) - v)).toBeLessThan(0.05);
+        expect(Math.abs(average(num) - m)).toBeLessThan(0.01);
+        expect(Math.abs(variance(num) - v)).toBeLessThan(0.02);
     });
 
-    it('rand int pcg algorithm for normal distribution', () => {
+    it('rand int pcg ziggurat algorithm for normal distribution', () => {
         const r = new RandJS();
-        var num = r.manyRandIntNormal(100000);
+        var num = r.manyRandIntPcgNormal(5000);
 
         // console.log(average(num));
         // console.log(variance(num));
 
-        expect(Math.abs(average(num))).toBeLessThan(0.01);
-        expect(Math.abs(variance(num) - 1)).toBeLessThan(0.11);
+        expect(Math.abs(average(num))).toBeLessThan(0.05);
+        expect(Math.abs(variance(num) - 1)).toBeLessThan(0.15);
     });
 
     it('rand float pcg exponential distribution', () => {
         const r = new RandJS();
-        var num = r.manyRandExponential(100000);
+        var num = r.manyRandPcgExponential(5000);
 
-        expect(Math.abs(average(num) - 1)).toBeLessThan(0.01);
-        expect(Math.abs(variance(num) - 1)).toBeLessThan(0.01);
+        expect(Math.abs(average(num) - 1)).toBeLessThan(0.1);
+        expect(Math.abs(variance(num) - 1)).toBeLessThan(0.1);
     });
 
     it('rand float pcg exponential distribution, lambda 7', () => {
         const r = new RandJS();
         let lambda = 7;
-        var num = r.manyRandExponential(100000, lambda);
+        var num = r.manyRandPcgExponential(5000, lambda);
 
         // console.log(average(num));
         // console.log(variance(num));
 
-        expect(Math.abs(average(num) - 1 / lambda)).toBeLessThan(0.01);
-        expect(Math.abs(variance(num) - 1 / (lambda ** 2) )).toBeLessThan(0.01);
+        expect(Math.abs(average(num) - 1 / lambda)).toBeLessThan(0.1);
+        expect(Math.abs(variance(num) - 1 / (lambda ** 2) )).toBeLessThan(0.1);
     });
 
     it('testing choice', () => {

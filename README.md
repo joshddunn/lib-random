@@ -37,8 +37,6 @@ A random colorCode will be returned in the form, '#bada55' (Output is a string)
 
 ## Uniform Distribution
 
-### Using LCG (incredibly fast)
-
 Random floating point numbers on the interval [a, b) (Output is a number)
 
     RandJS.rand(a = 0, b = 1)
@@ -49,29 +47,11 @@ n Random floating point numbers on the interval [a, b) (Output is an array)
     
 Random integers on the interval [a, b] (Output is a number)
 
-    RandJS.randInt(a = 0, b = 2147483647 - 1)
+    RandJS.randInt(a = 0, b = 2 ** 32 - 1)
     
 n Random integers on the interval [a, b] (Output is an array)
 
-    RandJS.manyRandInt(n, a = 0, b = 2147483647 - 1)
-
-### Using PCG
-
-Random floating point numbers on the interval [a, b) (Output is a number)
-
-    RandJS.randPcg(a = 0, b = 1)
-    
-n Random floating point numbers on the interval [a, b) (Output is an array)
-  
-    RandJS.manyRandPcg(n, a = 0, b = 1)
-    
-Random integers on the interval [a, b] (Output is a number)
-
-    RandJS.randIntPcg(a = 0, b = 2 ** 32 - 1)
-    
-n Random integers on the interval [a, b] (Output is an array)
-
-    RandJS.manyRandIntPcg(n, a = 0, b = 2 ** 32 - 1)
+    RandJS.manyRandInt(n, a = 0, b = 2 ** 32 - 1)
 
 ## Normal Distribution
 
@@ -79,35 +59,31 @@ Currently, normally distributed random numbers are generated using the [Box-Mull
 
 The generating algorithm will be switched to the [ziggurat algorithm](https://en.wikipedia.org/wiki/Ziggurat_algorithm) once 64-bit arithmetic becomes faster in javascript. 
 
-### Using PCG
-
 Random floating point numbers (Output is a number)
 
-    RandJS.randPcgNormal(mean = 0, variance = 1)
+    RandJS.randNormal(mean = 0, variance = 1)
 
 n Random floating point numbers (Output is an array)
 
-    RandJS.manyRandPcgNormal(n, mean = 0, variance = 1)
+    RandJS.manyRandNormal(n, mean = 0, variance = 1)
 
 Random integers (Output is a number)
 
-    RandJS.randIntPcgNormal(mean = 0, variance = 1)
+    RandJS.randIntNormal(mean = 0, variance = 1)
 
 n Random integers (Output is an array)
 
-    RandJS.manyRandIntPcgNormal(n, mean = 0, variance = 1)
+    RandJS.manyRandIntNormal(n, mean = 0, variance = 1)
 
 ## Exponential Distribution
 
-### Using PCG
-
 Random floating point numbers (Output is a number)
 
-    RandJS.randPcgExponential(lambda = 1)
+    RandJS.randExponential(lambda = 1)
 
 n Random floating point numbers (Output is an array)
 
-    RandJS.manyRandPcgExponential(n, lambda = 1)
+    RandJS.manyRandExponential(n, lambda = 1)
 
 # To Be Added
 
