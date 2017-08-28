@@ -43,7 +43,7 @@ export default class RandJS {
         if (s >= 1 || s === 0) {
             return this._boxMuller();
         } else {
-            let factor = Math.sqrt((-2 * Math.log(s)) / s);
+            let factor = Math.sqrt(-2 * Math.log(s) / s);
             this.storedGaussian.push(v * factor);
             return u * factor;
         }
