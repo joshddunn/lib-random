@@ -1,6 +1,6 @@
 {
   "name": "lib-random",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A seeded pseudorandom number generator from the PCG family with support for various distributions. A suite of utility functions are also included.",
   "keywords": [
       "pcg",
@@ -20,7 +20,7 @@
   "author": "Josh D. Dunn",
   "repository": {
       "type": "git",
-      "url": "https://github.com/joshddun/lib-random.git"
+      "url": "https://github.com/joshddunn/lib-random.git"
   },
   "license": "MIT",
   "devDependencies": {
@@ -32,8 +32,8 @@
   "dependencies": {
     "long": "^3.2.0"
   },
-  "homepage": "https://github.com/joshddun/lib-random",
+  "homepage": "https://github.com/joshddunn/lib-random",
   "bugs": {
-    "url": "https://github.com/joshddun/lib-random/issues"
+    "url": "https://github.com/joshddunn/lib-random/issues"
   }
 }
