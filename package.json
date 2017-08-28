@@ -1,6 +1,6 @@
 {
   "name": "lib-random",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A seeded pseudorandom number generator from the PCG family with support for various distributions. A suite of utility functions are also included.",
   "keywords": [
       "pcg",
