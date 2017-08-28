@@ -10,7 +10,7 @@
       "normal",
       "rng"
     ],
-  "main": "lib-random.js",
+  "main": "./src/lib-random.js",
   "scripts": {
     "clear": "rm -rf node_modules/",
     "test": "babel-node spec/run.js",
