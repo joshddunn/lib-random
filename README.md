@@ -20,8 +20,9 @@ This library uses a generator from the [PCG Family](http://www.pcg-random.org).
     var LibRandom = require("lib-random").default
 
     var r = new LibRandom(1)
-
     console.log(r.rand())    
+    
+    ...
 
 # API
 
