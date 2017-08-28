@@ -95,7 +95,7 @@ Random integers (Output is a number)
 
 n Random integers (Output is an array)
 
-    RandJS.randIntPcgNormal(n, mean = 0, variance = 1)
+    RandJS.manyRandIntPcgNormal(n, mean = 0, variance = 1)
 
 ## Exponential Distribution
 
