@@ -2,7 +2,7 @@
 
 rand.js is a seeded pseudorandom number generator for many distributions.
 
-Currently, this library uses a [linear congruential generator](https://en.wikipedia.org/wiki/Linear_congruential_generator), but looks to incorporate the [PCG Family](http://www.pcg-random.org) of generators in the future.
+This library uses a generator from the [PCG Family](http://www.pcg-random.org).
 
 # Usage
 
