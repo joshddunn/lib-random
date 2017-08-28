@@ -1,6 +1,6 @@
 import Long from 'long';
 
-export default class RandJS {
+export default class LibRandom {
 
     constructor(seed = Date.now()) {
         this.seed = seed;
