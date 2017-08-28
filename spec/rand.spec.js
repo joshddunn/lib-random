@@ -109,30 +109,35 @@ describe('RandJS:', () => {
         const r = new RandJS();
         var num = [];//r.manyRandPcgNormal(5000);
 
-        for (var i = 0; i < 10000000; i++) {
+        for (var i = 0; i < 1000000; i++) {
             num.push(r.randPcgNormal());
         }
 
         // console.log(Math.max(...num));
 
-        console.log(average(num));
-        console.log(variance(num));
+        // console.log(average(num));
+        // console.log(variance(num));
 
-        expect(Math.abs(average(num))).toBeLessThan(0.05);
-        expect(Math.abs(variance(num) - 1)).toBeLessThan(0.1);
+        expect(Math.abs(average(num))).toBeLessThan(0.01);
+        expect(Math.abs(variance(num) - 1)).toBeLessThan(0.01);
     });
 
     it('rand pcg ziggurat algorithm for normal distribution, mean = 4, variance = 10', () => {
         const r = new RandJS();
         var m = 4;
         var v = 10;
-        var num = r.manyRandPcgNormal(5000, m, v);
+        // var num = r.manyRandPcgNormal(5000, m, v);
+
+        var num = [];
+        for (var i = 0; i < 1000000; i++) {
+            num.push(r.randPcgNormal(m, v));
+        }
 
         // console.log(average(num));
         // console.log(variance(num));
 
-        expect(Math.abs(average(num) - m)).toBeLessThan(0.05);
-        expect(Math.abs(variance(num) - v)).toBeLessThan(0.1);
+        expect(Math.abs(average(num) - m)).toBeLessThan(0.01);
+        expect(Math.abs(variance(num) - v)).toBeLessThan(0.02);
     });
 
     it('rand int pcg ziggurat algorithm for normal distribution', () => {

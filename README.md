@@ -75,9 +75,9 @@ n Random integers on the interval [a, b] (Output is an array)
 
 ## Normal Distribution
 
-We use the [ziggurat algorithm](https://en.wikipedia.org/wiki/Ziggurat_algorithm) to sample random numbers. 
+Currently, normally distributed random numbers are generated using the [Box-Muller](https://en.wikipedia.org/wiki/Box–Muller_transform) to generate random numbers.
 
-_I think there may be a bug here, the variance has a slight positive bias._
+The generating algorithm will be switched to the [ziggurat algorithm](https://en.wikipedia.org/wiki/Ziggurat_algorithm) once 64-bit arithmetic becomes faster in javascript. 
 
 ### Using PCG
 
@@ -109,4 +109,7 @@ n Random floating point numbers (Output is an array)
 
     RandJS.manyRandPcgExponential(n, lambda = 1)
 
+# To Be Added
 
+- [Major probability distributions](https://en.wikipedia.org/wiki/List_of_probability_distributions)  
+    
