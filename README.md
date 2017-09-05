@@ -1,6 +1,6 @@
 # lib-random
-[![npm](https://img.shields.io/npm/dt/express.svg)](https://npmjs.com/package/lib-random)
-[![npm](https://img.shields.io/npm/v/npm.svg)](https://npmjs.com/package/lib-random)
+[![npm](https://img.shields.io/npm/dt/lib-random.svg)](https://npmjs.com/package/lib-random)
+[![npm](https://img.shields.io/npm/v/lib-random.svg)](https://npmjs.com/package/lib-random)
 
 lib-random is a seeded pseudorandom number generator for many distributions.
 
